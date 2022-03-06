@@ -1,16 +1,24 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        google()
     }
     // Maven artifact publish
     dependencies {
         classpath 'com.vanniktech:gradle-maven-publish-plugin:0.15.1'
+        classpath 'app.cash.paparazzi:paparazzi-gradle-plugin:1.0.0-SNAPSHOT'
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: "com.vanniktech.maven.publish"
+
+apply plugin: 'app.cash.paparazzi'
+
 
 android {
     compileSdkVersion 31

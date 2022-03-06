@@ -1,6 +1,5 @@
 package com.airbnb.android.showkase.screenshot.testing
 
-import android.graphics.Bitmap
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
@@ -9,18 +8,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicText
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.dp
 import com.airbnb.android.showkase.annotation.ShowkaseScreenshot
 import com.airbnb.android.showkase.models.ShowkaseBrowserColor
 import com.airbnb.android.showkase.models.ShowkaseBrowserComponent
 import com.airbnb.android.showkase.models.ShowkaseBrowserTypography
 import com.airbnb.android.showkase.ui.padding4x
-import org.junit.Rule
 import java.util.*
 
 /**
@@ -53,8 +48,6 @@ import java.util.*
  * generates a class that extends this class in order to get access to theonScreenshot method.
  */
 interface ShowkaseScreenshotTest {
-    @get:Rule
-    val composeTestRule: ComposeContentTestRule
 
     /**
      * This method is called during the execution of each screenshot test after the screenshot of
@@ -80,24 +73,20 @@ interface ShowkaseScreenshotTest {
         group: String,
         styleName: String? = null,
         screenshotType: ShowkaseScreenshotType,
-        screenshotBitmap: Bitmap,
+        composable: @Composable () -> Unit
     )
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun takeComposableScreenshot(
         showkaseBrowserComponent: ShowkaseBrowserComponent
     ) {
-        // Disable animations for screenshots to make them deterministic
-        composeTestRule.mainClock.autoAdvance = false
-        composeTestRule.setContent { showkaseBrowserComponent.component() }
-        val bitmap = composeTestRule.onRoot().captureToImage().asAndroidBitmap()
         onScreenshot(
             id = showkaseBrowserComponent.componentKey,
             name = showkaseBrowserComponent.componentName,
             group = showkaseBrowserComponent.group,
             styleName = showkaseBrowserComponent.styleName,
             screenshotType = ShowkaseScreenshotType.Composable,
-            screenshotBitmap = bitmap,
+            composable = { showkaseBrowserComponent.component() },
         )
     }
 
@@ -105,26 +94,22 @@ interface ShowkaseScreenshotTest {
     fun takeTypographyScreenshot(
         showkaseBrowserTypography: ShowkaseBrowserTypography
     ) {
-        // Disable animations for screenshots to make them deterministic
-        composeTestRule.mainClock.autoAdvance = false
-        composeTestRule.setContent {
-            BasicText(
-                text = showkaseBrowserTypography.typographyName.replaceFirstChar {
-                    it.titlecase(Locale.getDefault())
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(padding4x),
-                style = showkaseBrowserTypography.textStyle
-            )
-        }
-        val bitmap = composeTestRule.onRoot().captureToImage().asAndroidBitmap()
         onScreenshot(
             id = showkaseBrowserTypography.hashCode().toString(),
             name = showkaseBrowserTypography.typographyName,
             group = showkaseBrowserTypography.typographyGroup,
             screenshotType = ShowkaseScreenshotType.Typography,
-            screenshotBitmap = bitmap,
+            composable = {
+                BasicText(
+                    text = showkaseBrowserTypography.typographyName.replaceFirstChar {
+                        it.titlecase(Locale.getDefault())
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(padding4x),
+                    style = showkaseBrowserTypography.textStyle
+                )
+            }
         )
     }
 
@@ -132,22 +117,19 @@ interface ShowkaseScreenshotTest {
     fun takeColorScreenshot(
         showkaseBrowserColor: ShowkaseBrowserColor
     ) {
-        // Disable animations for screenshots to make them deterministic
-        composeTestRule.mainClock.autoAdvance = false
-        composeTestRule.setContent {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-                    .height(250.dp)
-                    .background(showkaseBrowserColor.color)
-            )
-        }
-        val bitmap = composeTestRule.onRoot().captureToImage().asAndroidBitmap()
         onScreenshot(
             id = showkaseBrowserColor.hashCode().toString(),
             name = showkaseBrowserColor.colorName,
             group = showkaseBrowserColor.colorGroup,
             screenshotType = ShowkaseScreenshotType.Color,
-            screenshotBitmap = bitmap,
+            composable = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .background(showkaseBrowserColor.color)
+                )
+            }
         )
     }
 }
