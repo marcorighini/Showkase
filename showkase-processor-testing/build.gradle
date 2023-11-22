@@ -3,20 +3,15 @@ apply plugin: 'kotlin-android'
 
 android {
     namespace "com.airbnb.android.showkase_processor_testing"
-    // Added to avoid this error -
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/gradle/incremental.annotation.processors', 'META-INF/*.kotlin_module', 'META-INF/AL2.0', 'META-INF/LGPL2.1']
+        }
+    }
+// Added to avoid this error -
     // Execution failed for task ':showkase-processor-testing:mergeDebugAndroidTestJavaResource'.
     // > A failure occurred while executing com.android.build.gradle.internal.tasks.Workers$ActionFacade
     // > More than one file was found with OS independent path 'META-INF/gradle/incremental.annotation.processors'
-    packagingOptions {
-        exclude 'META-INF/gradle/incremental.annotation.processors'
-        exclude("META-INF/*.kotlin_module")
-        // Added to avoid this error -
-        // Execution failed for task ':app:mergeDebugAndroidTestJavaResource'.
-        // > A failure occurred while executing com.android.build.gradle.internal.tasks.MergeJavaResWorkAction
-        // > 2 files found with path 'META-INF/AL2.0' from inputs:
-        exclude 'META-INF/AL2.0'
-        exclude 'META-INF/LGPL2.1'
-    }
     defaultConfig {
         minSdkVersion 26
         compileSdk 33

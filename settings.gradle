@@ -1,5 +1,6 @@
 rootProject.name = "Showkase"
 include ':showkase'
+include ':showkase-mp'
 include ':showkase-processor'
 include ':showkase-processor-testing'
 include ':showkase-annotation'

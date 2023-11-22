@@ -53,15 +53,15 @@ android {
         kotlinCompilerExtensionVersion "${versions.composeCompiler}"
 
     }
-    // Added to avoid this error -
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/AL2.0', 'META-INF/LGPL2.1', 'META-INF/gradle/incremental.annotation.processors']
+        }
+    }
+// Added to avoid this error -
     // Execution failed for task ':app:mergeDebugAndroidTestJavaResource'.
     // > A failure occurred while executing com.android.build.gradle.internal.tasks.MergeJavaResWorkAction
     // > 2 files found with path 'META-INF/AL2.0' from inputs:
-    packagingOptions {
-        exclude 'META-INF/AL2.0'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/gradle/incremental.annotation.processors'
-    }
 }
 if (project.hasProperty("useKsp")) {
     ksp {
