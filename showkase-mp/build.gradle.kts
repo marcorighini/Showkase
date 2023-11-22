@@ -13,7 +13,7 @@ buildscript {
 
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
+    id("com.android.application")
     id("org.jetbrains.compose") version "1.5.10"
 }
 
@@ -75,7 +75,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4" // TODO
+        kotlinCompilerExtensionVersion = "1.5.4"
     }
     packaging {
         resources {
@@ -95,3 +95,5 @@ android {
         debugImplementation("androidx.compose.ui:ui-tooling:1.5.4")
     }
 }
+
+// TODO remove hardcoded library versions
