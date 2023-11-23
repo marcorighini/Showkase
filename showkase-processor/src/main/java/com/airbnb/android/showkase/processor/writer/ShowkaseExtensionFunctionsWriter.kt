@@ -23,19 +23,19 @@ internal class ShowkaseExtensionFunctionsWriter(
             rootModulePackageName,
             "${rootModuleClassName}$SHOWKASE_METHODS_SUFFIX"
         )
-            .addFunction(
-                generateIntentFunction(
-                    rootModulePackageName,
-                    rootModuleClassName,
-                    rootElement
-                )
-            )
-            .addFunction(
-                generateMetadataFunction(
-                    rootElement,
-                    "$rootModulePackageName.$rootModuleClassName"
-                )
-            )
+//            .addFunction(
+//                generateIntentFunction(
+//                    rootModulePackageName,
+//                    rootModuleClassName,
+//                    rootElement
+//                )
+//            )
+//            .addFunction(
+//                generateMetadataFunction(
+//                    rootElement,
+//                    "$rootModulePackageName.$rootModuleClassName"
+//                )
+//            )
             .build()
             .writeTo(environment.filer, mode = XFiler.Mode.Aggregating)
     }

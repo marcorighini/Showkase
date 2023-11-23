@@ -1,5 +1,3 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-
 buildscript {
     repositories {
         mavenCentral()
@@ -14,7 +12,7 @@ buildscript {
 plugins {
     kotlin("multiplatform")
     id("com.android.application")
-    id("org.jetbrains.compose") version "1.5.10"
+    id("org.jetbrains.compose")
 }
 
 kotlin {
